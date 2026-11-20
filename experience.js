@@ -30,13 +30,28 @@
 
     if (reduceMotion.matches) return;
     const heroH = Math.max(1, hero?.offsetHeight || window.innerHeight);
-    set(root, '--lab-hero-progress', clamp(scrollTop / heroH).toFixed(3));
+    const hp = clamp(scrollTop / heroH);
+    set(root, '--lab-hero-progress', hp.toFixed(3));
+    set(root, '--lab-hero-y', (-hp*65).toFixed(1)+'px');
+    set(root, '--lab-hero-copy-y', (-hp*70).toFixed(1)+'px');
+    set(root, '--lab-hero-line-scale', (.05+hp*.95).toFixed(3));
+    set(root, '--lab-shaft-y', (hp*105).toFixed(1)+'px');
+    set(root, '--lab-hero-mobile-y', (hp*65).toFixed(1)+'px');
 
     if (bridge) {
       const r = bridge.getBoundingClientRect();
       const scrollable = Math.max(1, r.height - window.innerHeight);
       const p = clamp(-r.top / scrollable);
       set(root, '--lab-bridge-progress', p.toFixed(4));
+      set(root, '--lab-grid-scale', (1.05+p*.44).toFixed(3));
+      set(root, '--lab-grid-y', (-p*8).toFixed(1)+'%');
+      set(root, '--lab-grid-opacity', (.5+p*.36).toFixed(3));
+      set(root, '--lab-orbit-scale', (.62+p*1.17).toFixed(3));
+      set(root, '--lab-orbit-degrees', (p*90).toFixed(1)+'deg');
+      set(root, '--lab-orbit-opacity', (.25+p*.5).toFixed(3));
+      set(root, '--lab-bridge-copy-y', ((.5-p)*130).toFixed(1)+'px');
+      set(root, '--lab-bridge-copy-scale', (.81+p*.23).toFixed(3));
+      set(root, '--lab-bridge-copy-alpha', Math.min(1,.3+p*1.15).toFixed(3));
     }
 
     for (const floor of floors) {
@@ -44,12 +59,18 @@
       if (r.bottom < -100 || r.top > window.innerHeight + 100) continue;
       const p = clamp((window.innerHeight - r.top) / (window.innerHeight + r.height));
       set(floor, '--lab-scene-progress', p.toFixed(4));
+      set(floor, '--lab-scene-y', ((.5-p)*165).toFixed(1)+'px');
+      set(floor, '--lab-scene-line-scale', (.2+p*.8).toFixed(3));
+      set(floor, '--lab-card-y', ((.5-p)*28).toFixed(1)+'px');
+      set(floor, '--lab-visual-y', ((.5-p)*13).toFixed(1)+'px');
+      set(floor, '--lab-cafe-scale', (.98+p*.06).toFixed(3));
     }
     if (ribbon) {
       const r = ribbon.getBoundingClientRect();
       if (r.bottom > -100 && r.top < window.innerHeight + 100) {
         const p = clamp((window.innerHeight - r.top) / (window.innerHeight + r.height));
         set(ribbon, '--lab-ribbon-progress', p.toFixed(4));
+        set(ribbon, '--lab-ribbon-shift', (-p*31).toFixed(1)+'vw');
       }
     }
   }
@@ -76,6 +97,8 @@
       const y = clamp(event.clientY / Math.max(1, window.innerHeight));
       set(root, '--lab-mouse-x', x.toFixed(3));
       set(root, '--lab-mouse-y', y.toFixed(3));
+      set(root, '--lab-shaft-rotate-y', ((x-.5)*-9).toFixed(2)+'deg');
+      set(root, '--lab-shaft-rotate-x', ((y-.5)*6).toFixed(2)+'deg');
     }, { passive: true });
     document.addEventListener('pointerout', event => {
       if (!event.relatedTarget) cursor.classList.remove('is-visible');
@@ -93,10 +116,21 @@
         const y = clamp((e.clientY - rect.top) / Math.max(1,rect.height));
         set(card, '--lab-pointer-x', x.toFixed(3));
         set(card, '--lab-pointer-y', y.toFixed(3));
+        set(card, '--lab-sheen-x', ((x-.5)*45).toFixed(1)+'px');
+        set(card, '--lab-tilt-y', ((x-.5)*-6).toFixed(2)+'deg');
+        set(card, '--lab-tilt-x', ((y-.5)*5).toFixed(2)+'deg');
+        set(card, '--lab-tilt-y-hover', ((x-.5)*-8).toFixed(2)+'deg');
+        set(card, '--lab-tilt-x-hover', ((y-.5)*6).toFixed(2)+'deg');
+        set(card, '--lab-cafe-tilt', ((x-.5)*8).toFixed(2)+'deg');
+        set(card, '--lab-pointer-shift-x', ((x-.5)*-16).toFixed(1)+'px');
+        set(card, '--lab-pointer-shift-y', ((y-.5)*-16).toFixed(1)+'px');
       }, { passive: true });
       card.addEventListener('pointerleave', () => {
         set(card, '--lab-pointer-x', '.5');
         set(card, '--lab-pointer-y', '.5');
+        for(const property of ['--lab-sheen-x','--lab-tilt-y','--lab-tilt-x','--lab-tilt-y-hover','--lab-tilt-x-hover','--lab-cafe-tilt','--lab-pointer-shift-x','--lab-pointer-shift-y']){
+          card.style.removeProperty(property);
+        }
       });
     }
 
@@ -112,6 +146,8 @@
         set(target, '--lab-magnet-y', dy.toFixed(1)+'px');
         set(target, '--lab-pointer-x', (x*100).toFixed(1)+'%');
         set(target, '--lab-pointer-y', (y*100).toFixed(1)+'%');
+        set(target, '--lab-pointer-x-pct', (x*100).toFixed(1)+'%');
+        set(target, '--lab-pointer-y-pct', (y*100).toFixed(1)+'%');
       }, { passive: true });
       target.addEventListener('pointerleave', () => {
         set(target, '--lab-magnet-x', '0px');
