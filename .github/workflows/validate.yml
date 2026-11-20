@@ -1,0 +1,19 @@
+name: Validate Archive
+on:
+  push:
+    branches: ["feature/**", "fix/**", main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify scripts
+        run: |
+          node --check script.js
+          node --check experience.js
+      - name: Run static structure and accessibility smoke tests
+        run: node --test tests/site.test.mjs
