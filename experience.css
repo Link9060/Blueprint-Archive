@@ -84,6 +84,7 @@ main,.header,.footer,.floor-rail{position:relative;z-index:1}
 .hero-scroll-cue:after{content:"↓";font-size:15px;transform:translateY(0);animation:lab-scroll-arrow 2s ease-in-out infinite}
 @keyframes lab-scroll-arrow{50%{transform:translateY(7px)}}
 
+main { overflow: clip; } /* Unlike overflow:hidden, clip permits sticky scroll scenes. */
 /* A cinematic, scroll-linked transition between the archive entry and work. */
 .lab-bridge{
   position:relative;height:175svh;min-height:950px;
