@@ -33,14 +33,14 @@ main,.header,.footer,.floor-rail{position:relative;z-index:1}
   content:"";z-index:-1;position:absolute;left:6%;top:10%;height:85%;width:75%;
   pointer-events:none;opacity:.45;
   background:radial-gradient(ellipse,rgba(99,112,99,.10),transparent 62%);
-  transform:translate3d(0,calc(var(--lab-hero-progress)*-65px),0);
+  transform:translate3d(0,var(--lab-hero-y,0px),0);
 }
-.hero-copy{transform:translate3d(0,calc(var(--lab-hero-progress)*-70px),0);will-change:transform}
+.hero-copy{transform:translate3d(0,var(--lab-hero-copy-y,0px),0);will-change:transform}
 .hero h1{position:relative;isolation:isolate}
 .hero h1>span{position:relative;display:inline-block}
 .hero h1>span:after{
   content:"";position:absolute;inset:auto 5% -9% 2%;height:2px;
-  transform:scaleX(calc(.05 + var(--lab-hero-progress)*.95));transform-origin:left;
+  transform:scaleX(var(--lab-hero-line-scale,.05));transform-origin:left;
   background:linear-gradient(90deg,transparent,#e2e7df,transparent);
   opacity:.7;pointer-events:none;
 }
@@ -54,7 +54,7 @@ main,.header,.footer,.floor-rail{position:relative;z-index:1}
 .shaft-wrap{
   perspective:1000px;
   transform-style:preserve-3d;
-  transform:translate3d(0,calc(var(--lab-hero-progress)*105px),0) rotateY(calc((var(--lab-mouse-x) - .5)*-9deg)) rotateX(calc((var(--lab-mouse-y) - .5)*6deg));
+  transform:translate3d(0,var(--lab-shaft-y,0px),0) rotateY(var(--lab-shaft-rotate-y,0deg)) rotateX(var(--lab-shaft-rotate-x,0deg));
   transition:transform .18s linear;
   will-change:transform;
 }
@@ -99,14 +99,14 @@ main,.header,.footer,.floor-rail{position:relative;z-index:1}
   background-image:linear-gradient(rgba(220,232,218,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(220,232,218,.09) 1px,transparent 1px);
   background-size:56px 56px;
   transform-origin:center;
-  transform:rotateX(68deg) scale(calc(1.05 + var(--lab-bridge-progress)*.44)) translateY(calc(var(--lab-bridge-progress)*-8%));
-  opacity:calc(.5 + var(--lab-bridge-progress)*.36);pointer-events:none;
+  transform:rotateX(68deg) scale(var(--lab-grid-scale,1.05)) translateY(var(--lab-grid-y,0%));
+  opacity:var(--lab-grid-opacity,.5);pointer-events:none;
   mask-image:radial-gradient(ellipse at 50% 55%,#000 4%,transparent 75%);
 }
 .lab-bridge-orbits{
   position:absolute;left:50%;top:50%;width:min(60vw,660px);height:min(60vw,660px);min-width:330px;min-height:330px;
-  transform:translate(-50%,-50%) scale(calc(.62 + var(--lab-bridge-progress)*1.17)) rotate(calc(var(--lab-bridge-progress)*90deg));
-  opacity:calc(.25 + var(--lab-bridge-progress)*.5);pointer-events:none;
+  transform:translate(-50%,-50%) scale(var(--lab-orbit-scale,.62)) rotate(var(--lab-orbit-degrees,0deg));
+  opacity:var(--lab-orbit-opacity,.25);pointer-events:none;
 }
 .lab-bridge-orbits i{
   position:absolute;inset:0;display:block;border:1px solid rgba(230,237,225,.27);border-radius:50%;
@@ -119,8 +119,8 @@ main,.header,.footer,.floor-rail{position:relative;z-index:1}
 .lab-bridge-orbits:after{transform:rotate(90deg)}
 .lab-bridge-copy{
   position:relative;z-index:2;text-align:center;padding:30px;
-  transform:translate3d(0,calc((.5 - var(--lab-bridge-progress))*130px),0) scale(calc(.81 + var(--lab-bridge-progress)*.23));
-  opacity:calc(.3 + var(--lab-bridge-progress)*1.15);will-change:transform;
+  transform:translate3d(0,var(--lab-bridge-copy-y,65px),0) scale(var(--lab-bridge-copy-scale,.81));
+  opacity:var(--lab-bridge-copy-alpha,.3);will-change:transform;
 }
 .lab-bridge-copy .micro{color:#acb7af;letter-spacing:.28em}
 .lab-bridge-copy h2{
@@ -147,33 +147,33 @@ main,.header,.footer,.floor-rail{position:relative;z-index:1}
   font-size:clamp(140px,25vw,440px);line-height:1;font-weight:900;
   letter-spacing:-.11em;pointer-events:none;user-select:none;
   color:rgba(235,245,232,.028);z-index:-1;
-  transform:translate3d(0,calc((.5 - var(--lab-scene-progress,.5))*165px),0);
+  transform:translate3d(0,var(--lab-scene-y,0px),0);
 }
 .floor-head h2,.studio h2{position:relative}
 .floor-head h2:after,.studio-copy h2:after{
   content:"";display:block;margin-top:26px;height:1px;width:clamp(80px,20vw,300px);
-  background:#b4c1b7;transform:scaleX(calc(.2 + var(--lab-scene-progress,.5)*.8));transform-origin:left;
+  background:#b4c1b7;transform:scaleX(var(--lab-scene-line-scale,.6));transform-origin:left;
 }
 .floor .showcase,.floor .template-grid{
-  transform:translate3d(0,calc((.5 - var(--lab-scene-progress,.5))*28px),0);
+  transform:translate3d(0,var(--lab-card-y,0px),0);
   transition:transform .16s linear;
 }
 .interface-visual,.cafe-visual,.template-preview{isolation:isolate}
 .interface-visual:after,.cafe-visual:after,.template-preview:after{
   content:"";position:absolute;inset:-45%;
   background:linear-gradient(109deg,transparent 37%,rgba(255,255,255,.065) 50%,transparent 63%);
-  transform:translate3d(calc((var(--lab-pointer-x,.5) - .5)*45px),0,0) rotate(8deg);
+  transform:translate3d(var(--lab-sheen-x,0px),0,0) rotate(8deg);
   pointer-events:none;mix-blend-mode:screen;
 }
 .interface-visual .ui-window{
-  transform:perspective(1000px) rotateY(calc((var(--lab-pointer-x,.5) - .5)*-6deg))
-    rotateX(calc((var(--lab-pointer-y,.5) - .5)*5deg)) rotate(-1deg)
-    translateY(calc((.5 - var(--lab-scene-progress,.5))*13px));
+  transform:perspective(1000px) rotateY(var(--lab-tilt-y,0deg))
+    rotateX(var(--lab-tilt-x,0deg)) rotate(-1deg)
+    translateY(var(--lab-visual-y,0px));
   transition:transform .3s ease-out;
 }
-.interface-visual:hover .ui-window{transform:perspective(1000px) rotateY(calc((var(--lab-pointer-x,.5) - .5)*-8deg)) rotateX(calc((var(--lab-pointer-y,.5) - .5)*6deg)) translateY(-6px)}
+.interface-visual:hover .ui-window{transform:perspective(1000px) rotateY(var(--lab-tilt-y-hover,0deg)) rotateX(var(--lab-tilt-x-hover,0deg)) translateY(-6px)}
 .cafe-orbit{
-  transform:rotate(calc((var(--lab-pointer-x,.5) - .5)*8deg)) scale(calc(.98 + var(--lab-scene-progress,.5)*.06));
+  transform:rotate(var(--lab-cafe-tilt,0deg)) scale(var(--lab-cafe-scale,1));
   transition:transform .3s ease-out;
 }
 .template-card,.showcase{transition:border-color .3s,box-shadow .35s,transform .35s}
@@ -181,11 +181,11 @@ main,.header,.footer,.floor-rail{position:relative;z-index:1}
 .showcase:hover{border-color:#6b756b}
 .template-preview{transform-style:preserve-3d}
 .template-preview .preview-title,.template-preview .signal-circle,.template-preview .forge-mark{
-  transform:translate3d(calc((var(--lab-pointer-x,.5) - .5)*-16px),calc((var(--lab-pointer-y,.5) - .5)*-16px),0);
+  transform:translate3d(var(--lab-pointer-shift-x,0px),var(--lab-pointer-shift-y,0px),0);
   transition:transform .28s ease-out;
 }
-.template-preview .signal-circle{transform:translate3d(calc((var(--lab-pointer-x,.5) - .5)*-16px),calc((var(--lab-pointer-y,.5) - .5)*-16px),0) rotate(-13deg)}
-.template-preview .forge-mark{transform:translate3d(calc((var(--lab-pointer-x,.5) - .5)*-16px),calc((var(--lab-pointer-y,.5) - .5)*-16px),0) skew(-8deg)}
+.template-preview .signal-circle{transform:translate3d(var(--lab-pointer-shift-x,0px),var(--lab-pointer-shift-y,0px),0) rotate(-13deg)}
+.template-preview .forge-mark{transform:translate3d(var(--lab-pointer-shift-x,0px),var(--lab-pointer-shift-y,0px),0) skew(-8deg)}
 
 /* A living typographic ribbon, tied to scroll progress not to a perpetual timer. */
 .lab-ribbon{
@@ -194,7 +194,7 @@ main,.header,.footer,.floor-rail{position:relative;z-index:1}
 }
 .lab-ribbon-track{
   display:flex;align-items:center;gap:4.4vw;width:max-content;white-space:nowrap;
-  transform:translate3d(calc(var(--lab-ribbon-progress,0)*-31vw),0,0);
+  transform:translate3d(var(--lab-ribbon-shift,0vw),0,0);
   will-change:transform;
 }
 .lab-ribbon-track span{font-size:clamp(40px,7vw,112px);font-weight:900;letter-spacing:-.09em;line-height:1}
@@ -216,7 +216,7 @@ main,.header,.footer,.floor-rail{position:relative;z-index:1}
 }
 .button:after,.header-action:after,.template-link:after{
   content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(circle at var(--lab-pointer-x,50%) var(--lab-pointer-y,50%),rgba(159,173,159,.22),transparent 66%);
+  background:radial-gradient(circle at var(--lab-pointer-x-pct,50%) var(--lab-pointer-y-pct,50%),rgba(159,173,159,.22),transparent 66%);
   opacity:0;transition:opacity .2s;
 }
 .button:hover:after,.header-action:hover:after,.template-link:hover:after{opacity:1}
@@ -231,7 +231,7 @@ main,.header,.footer,.floor-rail{position:relative;z-index:1}
 }
 @media(hover:none),(pointer:coarse){
  .lab-cursor{display:none}
- .shaft-wrap{transition:none;transform:translateY(calc(var(--lab-hero-progress)*65px))}
+ .shaft-wrap{transition:none;transform:translateY(var(--lab-hero-mobile-y,0px))}
  .interface-visual .ui-window{transform:rotate(-1deg)}
  .hero .eyebrow:after{animation:none}
  .press-magnet{transform:none}
